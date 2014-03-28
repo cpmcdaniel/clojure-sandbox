@@ -1,0 +1,76 @@
+ssl_storage_port: 7001
+storage_port: 7000
+commitlog_segment_size_in_mb: 32
+key_cache_size_in_mb: null
+start_rpc: true
+memtable_flush_queue_size: 4
+client_encryption_options: {enabled: false, keystore: conf/.keystore, keystore_password: cassandra}
+rpc_server_type: sync
+authorizer: org.apache.cassandra.auth.AllowAllAuthorizer
+row_cache_save_period: 0
+disk_failure_policy: stop
+native_transport_port: 9042
+server_encryption_options: {internode_encryption: none, keystore: conf/.keystore,
+  keystore_password: cassandra, truststore: conf/.truststore, truststore_password: cassandra}
+dynamic_snitch_reset_interval_in_ms: 600000
+compaction_throughput_mb_per_sec: 16
+data_file_directories: [data/data]
+column_index_size_in_kb: 64
+rpc_keepalive: true
+snapshot_before_compaction: false
+row_cache_provider: SerializingCacheProvider
+concurrent_reads: 32
+key_cache_save_period: 14400
+row_cache_size_in_mb: 0
+rpc_address: localhost
+concurrent_writes: 32
+commitlog_sync: periodic
+thrift_max_message_length_in_mb: 16
+trickle_fsync: false
+compaction_preheat_key_cache: true
+write_request_timeout_in_ms: 10000
+initial_token: null
+incremental_backups: false
+truncate_request_timeout_in_ms: 60000
+reduce_cache_capacity_to: 0.6
+read_request_timeout_in_ms: 10000
+request_timeout_in_ms: 10000
+start_native_transport: false
+saved_caches_directory: data/saved_caches
+authenticator: org.apache.cassandra.auth.AllowAllAuthenticator
+max_hints_delivery_threads: 2
+cross_node_timeout: false
+partitioner: org.apache.cassandra.dht.Murmur3Partitioner
+hinted_handoff_enabled: true
+hinted_handoff_throttle_in_kb: 1024
+max_hint_window_in_ms: 3600000
+multithreaded_compaction: false
+auto_snapshot: true
+range_request_timeout_in_ms: 10000
+commitlog_directory: data/commitlog
+seed_provider:
+- class_name: org.apache.cassandra.locator.SimpleSeedProvider
+  parameters:
+  - {seeds: 127.0.0.1}
+dynamic_snitch_update_interval_in_ms: 100
+trickle_fsync_interval_in_kb: 10240
+listen_address: localhost
+commitlog_sync_period_in_ms: 10000
+cluster_name: Test Cluster
+index_interval: 128
+in_memory_compaction_limit_in_mb: 64
+endpoint_snitch: SimpleSnitch
+reduce_cache_sizes_at: 0.85
+dynamic_snitch_badness_threshold: 0.1
+rpc_port: 9160
+thrift_framed_transport_size_in_mb: 15
+flush_largest_memtables_at: 0.75
+request_scheduler: org.apache.cassandra.scheduler.NoScheduler
+
+
+## New defaults in this version of the config:
+{some_new_key: 'wtfn?', another_new_key: Clojure rocks!}
+
+
+## The following options are no longer valid in this version of the config:
+# {internode_compression: all}
