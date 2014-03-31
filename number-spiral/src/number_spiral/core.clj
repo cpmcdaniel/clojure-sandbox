@@ -1,29 +1,5 @@
-(ns number-spiral.core)
-
-(comment
-  [[0]]
-
-  [[0 1]]
-
-  [[0 1]
-   [nil 2]]
-
-  [[0 1]
-   [3 2]]
-
-  [[nil 0 1]
-   [4 3 2]]
-
-  [[5 0 1]
-   [4 3 2]]
-
-  [[6 nil nil]
-   [5 0 1]
-   [4 3 2]]
-
-  [[6 7 8 9]
-   [5 0 1 nil]
-   [4 3 2 nil]])
+(ns number-spiral.core
+  (require [clojure.pprint :refer [pprint]]))
 
 (defn nil-vec
   "Create a vector of nils of size n"
@@ -54,6 +30,12 @@
    (>= x (count data))
    (conj data (nil-vec (cols data)))
 
+   ;; left bottom - insert column at front
+   (and (= x (dec (rows data)))
+        (= y 0)
+        (not (nil? (-> data (nth x) (nth y)))))
+   (vec (for [row data] (vec (cons nil row))))
+
    ;; default - just return the data as-is
    :default data))
 
@@ -61,6 +43,10 @@
   "Move to the next coordinate in the spiral"
   [[x y] data]
   (cond
+   ;; don't move if current cell is nil
+   (nil? (-> data (nth x) (nth y)))
+   [x y]
+
    ;; move right?
    (and
     (= x 0)
@@ -69,24 +55,25 @@
    [x (inc y)]
 
    ;; move down?
-   (and (= (inc y) (cols data))
+   (and (= y (dec (cols data)))
         (<= x (rows data))
         (< (rows data) (cols data)))
    [(inc x) y]
 
    ;; move left?
-   (and (= (inc x) (rows data))
+   (and (= x (dec (rows data)))
         (> y 0))
    [x (dec y)]
 
-   :default [0 0]
-   ))
+   ;; move up?
+   (and (= y 0)
+        (or
+         (and (= x (dec (rows data)))
+              (> (cols data) (rows data)))
+         (> (dec (rows data)) x 0)))
+   [(dec x) y]
 
-(inc-coords [1 0] [[0 1]
-                   [2 3]])
-
-(expand-box [1 1] [[0 1]
-                   [2 3]])
+   :default [x y]))
 
 
 (defn make-spiral
@@ -104,5 +91,22 @@
                  new-data)))))
 
 
+(defn spiral-str
+  "Creates a string representation of the spiral"
+  [n]
+  (let [spiral (make-spiral n)
+        cell-len (inc (count (str n)))
+        cell-format (str "%" cell-len "d")]
+    (reduce (fn [s row]
+              (str s
+                   (reduce (fn [s cell]
+                             (str s (format cell-format cell))) "" row)
+                   "\n"))
+            "" spiral)))
 
-(make-spiral 4)
+(comment
+  ;; For experimenting at the REPL:
+
+  (make-spiral 24)
+
+  (println (spiral-str 120)))
