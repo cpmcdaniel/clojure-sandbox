@@ -39,4 +39,5 @@
 
 (comment
   ;; For testing at the REPL
- (migrate-yaml "resources/file1.yaml" "resources/file2.yaml" "target/out.yaml"))
+  (migrate-yaml "resources/file1.yaml" "resources/file2.yaml" "target/out.yaml")
+  (migrate-yaml "cassandra-1.2.12.yaml" "cassandra-2.0.3.yaml" "target/out.yaml"))

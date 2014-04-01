@@ -42,6 +42,14 @@ $ java -jar target/yaml-migration-0.1.0-SNAPSHOT-standalone.jar resources/file1.
 
 Sample input files can be found in ``resources``. A sample output file, ``out.yaml``, exists in the project root.
 
+## Cassandra example
+
+The Cassandra example takes a version to migrate to and uses Pomegranate/Aether to download the specified version of cassandra JAR file and depenencies into the local maven repo, adds them to the classpath, and then uses the Config class to compare against the old config file. To run this example:
+
+```
+$ lein run -m yaml-migration.cassandra resources/file1.yaml 2.0.6 target/out.yaml
+```
+
 ## License
 
 Copyright © 2014 Craig McDaniel

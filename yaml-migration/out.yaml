@@ -18,7 +18,6 @@ data_file_directories: [data/data]
 column_index_size_in_kb: 64
 rpc_keepalive: true
 snapshot_before_compaction: false
-row_cache_provider: SerializingCacheProvider
 concurrent_reads: 32
 key_cache_save_period: 14400
 row_cache_size_in_mb: 0
@@ -32,11 +31,11 @@ write_request_timeout_in_ms: 10000
 initial_token: null
 incremental_backups: false
 truncate_request_timeout_in_ms: 60000
-reduce_cache_capacity_to: 0.6
 read_request_timeout_in_ms: 10000
 request_timeout_in_ms: 10000
 start_native_transport: false
 saved_caches_directory: data/saved_caches
+internode_compression: all
 authenticator: org.apache.cassandra.auth.AllowAllAuthenticator
 max_hints_delivery_threads: 2
 cross_node_timeout: false
@@ -60,17 +59,53 @@ cluster_name: Test Cluster
 index_interval: 128
 in_memory_compaction_limit_in_mb: 64
 endpoint_snitch: SimpleSnitch
-reduce_cache_sizes_at: 0.85
 dynamic_snitch_badness_threshold: 0.1
 rpc_port: 9160
 thrift_framed_transport_size_in_mb: 15
-flush_largest_memtables_at: 0.75
 request_scheduler: org.apache.cassandra.scheduler.NoScheduler
 
 
-## New defaults in this version of the config:
-{some_new_key: 'wtfn?', another_new_key: Clojure rocks!}
+## New options with defaults:
+batchlog_replay_throttle_in_kb: 1024
+key_cache_keys_to_save: 2147483647
+commit_failure_policy: !!org.apache.cassandra.config.Config$CommitFailurePolicy 'stop'
+native_transport_max_frame_size_in_mb: 256
+disk_access_mode: !!org.apache.cassandra.config.Config$DiskAccessMode 'auto'
+inter_dc_tcp_nodelay: true
+dynamic_snitch: true
+streaming_socket_timeout_in_ms: 0
+num_tokens: 1
+populate_io_cache_on_flush: false
+tombstone_warn_threshold: 1000
+auto_bootstrap: true
+row_cache_keys_to_save: 2147483647
+preheat_kernel_page_cache: false
+hinted_handoff_enabled_by_dc: !!set {}
+commitlog_periodic_queue_size: 1024
+phi_convict_threshold: 8.0
+tombstone_failure_threshold: 100000
+max_streaming_retries: 3
+concurrent_compactors: 1
+concurrent_replicates: 32
+stream_throughput_outbound_megabits_per_sec: 200
+native_transport_max_threads: 128
+hinted_handoff_enabled_global: true
+memtable_allocator: SlabAllocator
+rpc_min_threads: 16
+memory_allocator: NativeAllocator
+rpc_max_threads: 2147483647
+permissions_validity_in_ms: 2000
+cas_contention_timeout_in_ms: 1000
+
+
+## New options without defaults:
+# {rpc_send_buff_size_in_bytes: null, memtable_flush_writers: null, internode_authenticator: null,
+#   commitlog_total_space_in_mb: null, encryption_options: null, request_scheduler_id: null,
+#   rpc_recv_buff_size_in_bytes: null, request_scheduler_options: null, memtable_total_space_in_mb: null,
+#   internode_send_buff_size_in_bytes: null, file_cache_size_in_mb: null, commitlog_sync_batch_window_in_ms: null,
+#   internode_recv_buff_size_in_bytes: null, broadcast_address: null}
 
 
 ## The following options are no longer valid in this version of the config:
-# {internode_compression: all}
+# {reduce_cache_capacity_to: 0.6, reduce_cache_sizes_at: 0.85, flush_largest_memtables_at: 0.75,
+#   row_cache_provider: SerializingCacheProvider}
